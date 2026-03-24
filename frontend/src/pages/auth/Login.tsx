@@ -8,6 +8,7 @@ import { AuthLayout } from '../../layouts';
 import { Button, Input, Card } from '../../components/common';
 import { useAuth } from '../../hooks';
 import { STRINGS } from '../../constants';
+import { LOGIN_STYLES } from '../../styles/loginStyles';
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ export const LoginPage: React.FC = () => {
   });
 
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [linkHover, setLinkHover] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -53,15 +55,15 @@ export const LoginPage: React.FC = () => {
 
   return (
     <AuthLayout>
-      <Card className="mb-6">
-        <h1 className="text-3xl font-bold text-center mb-2 text-gray-900">
+      <Card style={LOGIN_STYLES.cardStyles()}>
+        <h1 style={LOGIN_STYLES.titleStyles()}>
           {STRINGS.AUTH.LOGIN_TITLE}
         </h1>
-        <p className="text-center text-gray-600 mb-6">
+        <p style={LOGIN_STYLES.subtitleStyles()}>
           Sign in to your account
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} style={LOGIN_STYLES.formContainerStyles()}>
           <Input
             name="email"
             type="email"
@@ -85,27 +87,34 @@ export const LoginPage: React.FC = () => {
           />
 
           {(validationErrors.submit || error) && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+            <div style={LOGIN_STYLES.errorBoxStyles()}>
               {validationErrors.submit || error}
             </div>
           )}
 
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            isLoading={isLoading}
-            className="w-full mt-6"
-          >
-            {STRINGS.BUTTON.SIGN_IN}
-          </Button>
+          <div style={LOGIN_STYLES.submitButtonContainerStyles()}>
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              isLoading={isLoading}
+              className="w-full"
+            >
+              {STRINGS.BUTTON.SIGN_IN}
+            </Button>
+          </div>
         </form>
 
-        <p className="text-center mt-4 text-gray-600">
+        <p style={LOGIN_STYLES.footerTextStyles()}>
           Don't have an account?{' '}
           <button
             onClick={() => navigate('/signup')}
-            className="text-indigo-600 hover:text-indigo-700 font-semibold"
+            onMouseEnter={() => setLinkHover(true)}
+            onMouseLeave={() => setLinkHover(false)}
+            style={{
+              ...LOGIN_STYLES.footerLinkStyles(),
+              ...(linkHover && LOGIN_STYLES.footerLinkHoverStyles()),
+            }}
           >
             Sign up
           </button>

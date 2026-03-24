@@ -1,14 +1,16 @@
 /**
- * Input component with validation state
+ * Input component with validation state and animations
+ * Uses centralized styling from componentStyles
  */
 
-import React from 'react';
-import { COLORS } from '../../constants';
+import React, { useState } from 'react';
+import { INPUT_STYLES } from '../../styles/componentStyles';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
   helperText?: string;
+  icon?: React.ReactNode;
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -19,54 +21,57 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     className = '',
     type = 'text',
     style,
+    icon,
     ...props
   }, ref) => {
     const hasError = !!error;
+    const [isFocused, setIsFocused] = useState(false);
 
-    const inputStyles: React.CSSProperties = {
-      width: '100%',
-      padding: '0.625rem 1rem',
-      fontSize: '1rem',
-      color: '#374151',
-      border: `1px solid ${hasError ? COLORS.error : '#d1d5db'}`,
-      borderRadius: '0.5rem',
-      transition: 'all 0.2s',
-      outline: 'none',
-      ...style,
-    };
+    const inputStyles = INPUT_STYLES.getInputStyles(hasError, isFocused);
+    const labelStyles = INPUT_STYLES.getLabelStyles(isFocused);
+    const containerStyles = INPUT_STYLES.getContainerStyles();
 
     return (
-      <div className="w-full">
+      <div style={{...containerStyles, animation: error ? 'errorShake 0.3s ease-in-out' : 'none'}} className={`${error ? 'animate-error-shake' : ''}`}>
         {label && (
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">
+          <label style={labelStyles}>
             {label}
           </label>
         )}
 
-        <input
-          ref={ref}
-          type={type}
-          style={inputStyles}
-          onFocus={(e) => {
-            e.currentTarget.style.borderColor = hasError ? COLORS.error : COLORS.primary;
-            e.currentTarget.style.boxShadow = `0 0 0 2px ${hasError ? COLORS.errorLight : COLORS.primaryLight}`;
-          }}
-          onBlur={(e) => {
-            e.currentTarget.style.boxShadow = 'none';
-            e.currentTarget.style.borderColor = hasError ? COLORS.error : '#d1d5db';
-          }}
-          {...props}
-        />
+        <div style={{ position: 'relative', width: '100%' }}>
+          <input
+            ref={ref}
+            type={type}
+            style={{...inputStyles, ...style}}
+            onFocus={(e) => {
+              setIsFocused(true);
+              props.onFocus?.(e);
+            }}
+            onBlur={(e) => {
+              setIsFocused(false);
+              props.onBlur?.(e);
+            }}
+            {...props}
+          />
+          
+          {/* Success indicator */}
+          {!error && (props.value as string)?.length > 0 && !isFocused && (
+            <div style={INPUT_STYLES.getSuccessIndicatorStyles()}>
+              ✓
+            </div>
+          )}
+        </div>
 
         {error && (
-          <p style={{ color: COLORS.error }} className="text-sm mt-1.5">
-            {error}
+          <p style={INPUT_STYLES.getErrorTextStyles()}>
+            ⚠ {error}
           </p>
         )}
 
         {helperText && !error && (
-          <p className="text-sm mt-1.5 text-gray-500">
-            {helperText}
+          <p style={INPUT_STYLES.getHelperTextStyles()}>
+            ℹ {helperText}
           </p>
         )}
       </div>
