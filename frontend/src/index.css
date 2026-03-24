@@ -1,6 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Import animations */
+@import './styles/animations.css';
+
+@import 'tailwindcss';
 
 :root {
   --text: #6b6375;
