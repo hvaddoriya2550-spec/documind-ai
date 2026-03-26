@@ -13,7 +13,6 @@ interface FormGroupProps {
 }
 
 export const FormGroup: React.FC<FormGroupProps> = ({
-  label,
   error,
   children,
   helperText,

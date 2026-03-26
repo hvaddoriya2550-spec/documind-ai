@@ -21,7 +21,7 @@ interface ModalState extends ModalConfig {
 /**
  * Modal context type definition
  */
-type IModalContext = {
+export type IModalContext = {
   /**
    * Open a modal with configuration
    * @param config Modal configuration
