@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import SplashPage from './pages/Splash';
 import { AppRoutes } from './routes';
+import { ModalProvider } from './context/ModalContext';
 import './styles/animations.css';
 import './App.css';
 
@@ -19,7 +20,7 @@ function App() {
   }, []);
 
   return (
-    <>
+    <ModalProvider>
       {showSplash && <SplashPage onComplete={() => setShowSplash(false)} />}
       
       {!showSplash && (
@@ -27,7 +28,7 @@ function App() {
           <AppRoutes />
         </BrowserRouter>
       )}
-    </>
+    </ModalProvider>
   );
 }
 

@@ -97,6 +97,40 @@ export const THEME = {
     danger: 'linear-gradient(135deg, #ef4444 0%, #f43f5e 100%)',
     hero: 'linear-gradient(135deg, #8b5cf6 0%, #d946ef 50%, #3b82f6 100%)',
   },
+
+  // Modal Design Tokens (Premium SaaS standards)
+  modal: {
+    backdrop: {
+      color: 'rgba(0, 0, 0, 0.5)',
+      blur: 'blur(4px)',
+    },
+    border: {
+      light: '#e5e7eb',
+      dark: '#374151',
+    },
+    animation: {
+      duration: '0.4s',
+      timingFunction: 'ease-out',
+    },
+    sizes: {
+      sm: {
+        maxWidth: '28rem',
+        padding: '1.5rem',
+      },
+      md: {
+        maxWidth: '32rem',
+        padding: '1.5rem',
+      },
+      lg: {
+        maxWidth: '36rem',
+        padding: '2rem',
+      },
+      xl: {
+        maxWidth: '48rem',
+        padding: '2rem',
+      },
+    },
+  },
 } as const;
 
 export default THEME;
