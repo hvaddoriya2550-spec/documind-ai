@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import Column, DateTime, Integer, String
+from sqlalchemy.orm import relationship
 
 from app.core.database import Base
 
@@ -19,3 +20,5 @@ class User(Base):
         onupdate=datetime.utcnow,
         nullable=False,
     )
+
+    workspaces = relationship("Workspace", back_populates="user", cascade="all, delete-orphan")

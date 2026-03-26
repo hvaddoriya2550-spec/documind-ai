@@ -4,7 +4,11 @@ from sqlalchemy import text
 
 from app.api.router import api_router
 from app.core.database import Base, engine
+
+# Import models in correct order to avoid circular dependencies
 from app.models.user import User  # noqa: F401
+from app.models.workspace import Workspace  # noqa: F401
+from app.models.document import Document  # noqa: F401
 
 # Initialize database tables
 Base.metadata.create_all(bind=engine)
